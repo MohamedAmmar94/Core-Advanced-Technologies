@@ -1,0 +1,23 @@
+<?php
+namespace App\Repositories\Eloquent;
+
+use App\Models\Invoice;
+use App\Repositories\InvoiceRepositoryInterface;
+
+class InvoiceRepository implements InvoiceRepositoryInterface
+{
+    public function findById(int $id): ?Invoice
+    {
+        return Invoice::find($id);
+    }
+
+    public function create(array $data): Invoice
+    {
+        return Invoice::create($data);
+    }
+
+    public function getByContractId(int $contractId): array
+    {
+        return Invoice::where('contract_id', $contractId)->get()->all();
+    }
+}

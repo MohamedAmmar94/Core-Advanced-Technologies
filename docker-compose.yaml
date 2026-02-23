@@ -1,0 +1,55 @@
+services:
+  core_advanced_technologies_app:
+    build:
+      context: .
+      # كدا docker هيستخدم Dockerfile الموجود في مجلد المشروع
+      dockerfile: docker/php/Dockerfile
+    container_name: core_advanced_technologies_app
+    image: core_advanced_technologies_app_image
+    volumes:
+      - .:/var/www/html
+      - ./vendor:/var/www/html/vendor
+      - ./node_modules:/var/www/html/node_modules
+      - ./storage:/var/www/html/storage
+    ports:
+      - "8000:80" # بيفتح Apache على بورت 8000
+    depends_on:
+      - core_advanced_technologies_db
+      - core_advanced_technologies_redis
+
+  core_advanced_technologies_db:
+    image: mysql:8.0
+    container_name: core_advanced_technologies_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: core_advanced_technologies
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3311:3306" # بورت مختلف عن مشروعك الاول
+    volumes:
+      - core_advanced_technologies_db_data:/var/lib/mysql
+
+  core_advanced_technologies_phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: core_advanced_technologies_phpmyadmin
+    restart: always
+    ports:
+      - "8080:80" # بورت مختلف عن المشروع الأول
+    environment:
+      PMA_HOST: core_advanced_technologies_db
+      MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - core_advanced_technologies_db
+    volumes:
+      - /d/work/Docker/phpmyadmin/php.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+
+  core_advanced_technologies_redis:
+    image: redis:alpine
+    container_name: core_advanced_technologies_redis
+    volumes:
+      - core_advanced_technologies_redis_data:/data
+    restart: always
+
+volumes:
+  core_advanced_technologies_db_data:
+  core_advanced_technologies_redis_data:
