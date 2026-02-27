@@ -34,6 +34,7 @@ return new class extends Migration
             $table->date('due_date');
             $table->timestamp('paid_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

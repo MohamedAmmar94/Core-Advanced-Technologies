@@ -20,4 +20,8 @@ class PaymentRepository implements PaymentRepositoryInterface
     {
         return Payment::where('invoice_id', $invoiceId)->get()->all();
     }
+    public function sumByInvoice(int $invoiceId): float
+    {
+        return (float) Payment::where('invoice_id', $invoiceId)->sum('amount');
+    }
 }

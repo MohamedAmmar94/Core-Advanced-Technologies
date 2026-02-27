@@ -16,7 +16,7 @@ class ContractFactory extends Factory
     public function definition(): array
     {
         return [
-            'tenant_id'     => $this->faker->numberBetween(1, 10),
+            'tenant_id'     => $this->faker->numberBetween(1, 2),
             'unit_name'     => $this->faker->word,
             'customer_name' => $this->faker->name,
             'rent_amount'   => $this->faker->randomFloat(2, 1000, 10000),

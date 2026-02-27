@@ -25,7 +25,7 @@ services:
       MYSQL_DATABASE: core_advanced_technologies
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - "3311:3306" # بورت مختلف عن مشروعك الاول
+      - "3311:3306"
     volumes:
       - core_advanced_technologies_db_data:/var/lib/mysql
 
@@ -34,7 +34,7 @@ services:
     container_name: core_advanced_technologies_phpmyadmin
     restart: always
     ports:
-      - "8080:80" # بورت مختلف عن المشروع الأول
+      - "6062:80" # بورت مختلف عن المشروع الأول
     environment:
       PMA_HOST: core_advanced_technologies_db
       MYSQL_ROOT_PASSWORD: root

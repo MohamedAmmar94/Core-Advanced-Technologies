@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('reference_number')->nullable();
             $table->timestamp('paid_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

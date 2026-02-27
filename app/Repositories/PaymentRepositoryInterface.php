@@ -10,4 +10,6 @@ interface PaymentRepositoryInterface
     public function create(array $data): Payment;
 
     public function getByInvoiceId(int $invoiceId): array;
+    public function sumByInvoice(int $invoiceId): float;
+
 }

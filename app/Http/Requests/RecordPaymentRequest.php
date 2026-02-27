@@ -10,7 +10,7 @@ class RecordPaymentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -18,6 +18,13 @@ class RecordPaymentRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+    public function all($keys = null)
+    {
+
+        $data               = parent::all($keys);
+        $data['invoice_id'] = $this->route('invoice')?->id ?? "";
+        return $data;
+    }
     public function rules(): array
     {
         return [

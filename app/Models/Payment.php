@@ -8,12 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Payment extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = [
-        'invoice_id',
-        'amount',
-        'payment_method',
-        'reference_number',
-        'paid_at',
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
     ];
     protected $casts = [
         'paid_at' => 'datetime',

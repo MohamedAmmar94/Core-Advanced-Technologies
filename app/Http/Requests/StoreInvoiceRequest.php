@@ -11,7 +11,7 @@ class StoreInvoiceRequest extends FormRequest
     public function authorize(): bool
     {
         //policies or authentication
-        return false;
+        return true;
     }
 
     /**
@@ -19,6 +19,13 @@ class StoreInvoiceRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+    public function all($keys = null)
+    {
+
+        $data                = parent::all($keys);
+        $data['contract_id'] = $this->route('contract')?->id ?? "";
+        return $data;
+    }
     public function rules(): array
     {
         return [

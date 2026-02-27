@@ -8,15 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Invoice extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = [
-        'contract_id',
-        'invoice_number',
-        'subtotal',
-        'tax_amount',
-        'total',
-        'status',
-        'due_date',
-        'paid_at',
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
     ];
     protected $casts = [
         'due_date'   => 'date',
@@ -33,5 +28,10 @@ class Invoice extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+    public function getTotalPaidAttribute()
+    {
+        // $this->payments()->sum('amount');
+        return (float) $this->payments()->sum('amount') ?? 0;
     }
 }
