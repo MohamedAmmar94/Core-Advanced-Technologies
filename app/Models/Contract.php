@@ -30,12 +30,12 @@ class Contract extends Model
     public function payments()
     {
         return $this->hasManyThrough(
-            Payment::class, // final model
-            Invoice::class, // intermediate model
-            'contract_id',  // Foreign key on invoices table
-            'invoice_id',   // Foreign key on payments table
-            'id',           // Local key on contracts
-            'id'            // Local key on invoices
+            Payment::class,
+            Invoice::class,
+            'contract_id',
+            'invoice_id',
+            'id',
+            'id'
         );
     }
 }

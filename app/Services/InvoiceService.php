@@ -4,6 +4,9 @@ namespace App\Services;
 use App\DTOs\CreateInvoiceDTO;
 use App\DTOs\InvoiceFilterDTO;
 use App\DTOs\RecordPaymentDTO;
+use App\Events\InovicePaid;
+use App\Exceptions\ContractNotActiveException;
+use App\Exceptions\InsufficientBalanceException;
 use App\Repositories\ContractRepositoryInterface;
 use App\Repositories\InvoiceRepositoryInterface;
 use App\Repositories\PaymentRepositoryInterface;
@@ -27,6 +30,7 @@ class InvoiceService
             // dd($contract);
             //=============>first condition
             if (! $contract || $contract->status !== 'active') {
+                throw new ContractNotActiveException();
                 return ['error' => true, 'message' => 'Invoice cannot be created for non-active contract.', 'status_code' => 422];
             }
             //============>second condition
@@ -77,7 +81,10 @@ class InvoiceService
             // $totalPaid        = $this->paymentRepo->sumByInvoice($invoice->id);
             $totalPaid        = $invoice->total_paid;
             $remainingBalance = $invoice->total - $totalPaid;
+            // dd($remainingBalance, $dto->amount, $totalPaid);
             if ($dto->amount > $remainingBalance) {
+                throw new InsufficientBalanceException();
+
                 return ['error' => true, 'message' => 'payment exceeds remaining balance.', 'status_code' => 422];
 
             }
@@ -95,6 +102,8 @@ class InvoiceService
 
             if ($newTotalPaid == $invoice->total) {
                 $this->invoiceRepo->updateStatus($invoice->id, 'paid');
+                event(new InovicePaid($invoice));
+
             } elseif ($newTotalPaid > 0) {
                 $this->invoiceRepo->updateStatus($invoice->id, 'partially_paid');
             }

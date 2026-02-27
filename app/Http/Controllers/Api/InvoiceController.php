@@ -32,6 +32,7 @@ class InvoiceController extends Controller
     }
     public function list(Contract $contract, Request $request)
     {
+
         $this->authorize('viewAny', [Invoice::class, $contract]);
 
         $filters = new InvoiceFilterDTO(
